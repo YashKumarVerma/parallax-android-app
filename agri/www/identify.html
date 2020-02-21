@@ -61,12 +61,18 @@
 				</div>
 				<div class="card-content">
 					<!-- main card content -->
-
+					Identify the disease on your crop. Simply click the photo of the leaf which you find abnormal.
 					<!-- main card content ends -->
 					<p>Find what's bothering your crops</p>
 				</div>
+				<div class="card-action center-align">
+					<button id="captureImageButton" class=" waves-effect waves-light btn centre"><i
+							class="fa fa-camera"></i><span></span>
+						Capture Image</button>
+				</div>
+
 				<div class="card-action">
-					<a href="./identify.html">Try Now</a>
+					<a href="./identify.html">Identify Now !</a>
 				</div>
 			</div>
 		</div>
@@ -82,7 +88,9 @@
 	$(document).ready(function () {
 		$('.sidenav').sidenav();
 	});
-
+	$("#captureImageButton").on("click", function () {
+		console.log("triggering photo clicking");
+	});
 </script>
 
 </html>
