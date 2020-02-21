@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="format-detection" content="telephone=no">
+	<meta name="msapplication-tap-highlight" content="no">
+	<meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+	<link rel="stylesheet" href="./bower_components//materialize/dist//css/materialize.min.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<title>Agri Help</title>
+</head>
+
+<body>
+	<!-- main content starts -->
+	<div class="navbar-fixed">
+		<nav>
+			<div class="nav-wrapper">
+				<a href="#!" class="brand-logo">Logo</a>
+				<ul class="right hide-on-med-and-down">
+					<li><a href="sass.html">Sass</a></li>
+					<li><a href="badges.html">Components</a></li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+
+	<!-- sidenav -->
+	<ul id="slide-out" class="sidenav">
+		<li>
+			<div class="user-view">
+				<div class="background">
+					<img src="./img/farmland.png">
+				</div>
+				<a href="#user"><img class="circle" src="./img/farmer.png"></a>
+				<a href="#name"><span class="white-text name">John Doe</span></a>
+				<a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+			</div>
+		</li>
+		<li><a class="subheader">Subheader</a></li>
+		<li><a class="waves-effect" href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
+		<li><a href="#!">Second Link</a></li>
+		<li>
+			<div class="divider"></div>
+		</li>
+	</ul>
+	<a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+	<!-- sidenav ends -->
+	<div id="test1" class="col s12">Test 1</div>
+	<div id="test2" class="col s12">Test 2</div>
+	<div id="test3" class="col s12">Test 3</div>
+	<div id="test4" class="col s12">Test 4</div>
+	<!-- main content ends -->
+</body>
+<script src="./bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/materialize/dist/js/materialize.min.js"></script>
+<script src="./custom/js/index.js"></script>
+<script>
+	$(document).ready(function () {
+		$('.sidenav').sidenav();
+	});
+
+</script>
+
+</html>
