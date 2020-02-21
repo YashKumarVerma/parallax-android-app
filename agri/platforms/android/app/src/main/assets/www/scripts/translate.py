@@ -5,13 +5,15 @@ import sys
 import shutil
 from googletrans import Translator
 from datetime import datetime
-translator = Translator();
+translator = Translator()
 
 """
 FILE HANDLES
 """
 languageList = [line.rstrip() for line in open("./languages.ykv")]
 jsonData= [line.rstrip() for line in open(sys.argv[1])]
+
+print(jsonData)
 
 log = open("./worklog.ykv","w");
 # print(languageList);

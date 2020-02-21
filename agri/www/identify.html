@@ -5,7 +5,7 @@
 	<meta name="format-detection" content="telephone=no">
 	<meta name="msapplication-tap-highlight" content="no">
 	<meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
-	<link rel="stylesheet" href="./bower_components//materialize/dist//css/materialize.min.css">
+	<link rel="stylesheet" href="./css/materialize.min.css">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="./bower_components/fontawesome/css/all.css">
 	<title>Agri Help</title>
@@ -66,9 +66,9 @@
 					<p>Find what's bothering your crops</p>
 				</div>
 				<div class="card-action center-align">
-					<button id="captureImageButton" class=" waves-effect waves-light btn centre"><i
-							class="fa fa-camera"></i><span></span>
-						Capture Image</button>
+					<button id="captureImageButton" class=" waves-effect waves-light btn centre">
+						<i class="fa fa-camera"></i><span></span>
+						<span id="capturePhotoMessage">Capture Image</span></button>
 				</div>
 			</div>
 		</div>
@@ -79,49 +79,70 @@
 <script src="./bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/materialize/dist/js/materialize.min.js"></script>
 <script src="./bower_components/fontawesome/js/all.js"></script>
-<script src="./custom/js/index.js"></script>
+<!-- <script src="./custom/js/index.js"></script> -->
+<script src="cordova.js"></script>
 <script>
 	$(document).ready(function () {
 		$('.sidenav').sidenav();
 	});
 
-	function captureSuccess(mediaFiles) {
-        var i, len;
-        for (i = 0, len = mediaFiles.length; i < len; i += 1) {
-            uploadFile(mediaFiles[i]);
-        }       
+	// to convert file to base 64
+	function getFileContentAsBase64(path, callback) {
+		window.resolveLocalFileSystemURL(path, gotFile, fail);
+
+		function fail(e) {
+			alert('Cannot found requested file');
+		}
+
+		function gotFile(fileEntry) {
+			fileEntry.file(function (file) {
+				var reader = new FileReader();
+				reader.onloadend = function (e) {
+					var content = this.result;
+					callback(content);
+				};
+				// The most important point, use the readAsDatURL Method from the file plugin
+				reader.readAsDataURL(file);
+			});
+		}
 	}
-	
+
+	function captureSuccess(mediaFiles) {
+		console.log(mediaFiles);
+		$("#capturePhotoMessage").text("Processing Image");
+		getFileContentAsBase64(mediaFiles[0].fullPath, function (base64String) {
+			// now make a request to server with data
+			$.ajax({
+				url: 'https://lsppublicschool.org/deploy/parallax/',
+				method: 'POST',
+				data: {
+					payload: base64String
+				},
+				success: function (resp) {
+					$("#capturePhotoMessage").text("Image Sent to data");
+					console.log(resp);
+				},
+				error: function (err) {
+					$("#capturePhotoMessage").text("Error Uploading Image");
+					console.log(err);
+				}
+			})
+		});
+	}
+
 	function captureError(error) {
 		var msg = 'An error occurred during capture: ' + error.code;
-        navigator.notification.alert(msg, null, 'Uh oh!');
+		navigator.notification.alert(msg, null, 'Uh oh!');
 	}
-	
-	// Upload files to server
-	function uploadFile(mediaFile) {
-		var ft = new FileTransfer(),
-			path = mediaFile.fullPath,
-			name = mediaFile.name;
 
-		ft.upload(path,
-			"http://my.domain.com/upload.php",
-			function(result) {
-				console.log('Upload success: ' + result.responseCode);
-				console.log(result.bytesSent + ' bytes sent');
-			},
-			function(error) {
-				console.log('Error uploading file ' + path + ': ' + error.code);
-			},
-			{ fileName: name });   
+	function captureImage() {
+		navigator.device.capture.captureImage(captureSuccess, captureError, { limit: 1 });
 	}
-	
+
 	$("#captureImageButton").on("click", function () {
 		console.log("triggering photo clicking");
-		function captureImage() {
-        // Launch device camera application, 
-        // allowing user to capture up to 2 images
-        navigator.device.capture.captureImage(captureSuccess, captureError, {limit: 1});
-		}
+		$("#capturePhotoMessage").text("Capturing Image");
+		captureImage();
 	});
 
 </script>

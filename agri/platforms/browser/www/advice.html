@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="format-detection" content="telephone=no">
+	<meta name="msapplication-tap-highlight" content="no">
+	<meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+	<link rel="stylesheet" href="./css/materialize.min.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="./bower_components/fontawesome/css/all.css">
+	<title>Agri Help</title>
+</head>
+
+<body>
+	<!-- main content starts -->
+	<div class="navbar-fixed">
+		<nav>
+			<div class="nav-wrapper">
+				<a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+				<a href="#!" class="brand-logo">Sahayak</a>
+			</div>
+		</nav>
+	</div>
+
+	<!-- sidenav -->
+	<ul id="slide-out" class="sidenav">
+		<li>
+			<div class="user-view">
+				<div class="background">
+					<img src="./img/farmland.png">
+				</div>
+				<a href="#user"><img class="circle" src="./img/farmer.png"></a>
+				<a href="#name"><span class="white-text name">User</span></a>
+				<a href="#email"><span class="white-text email">Village Name</span></a>
+			</div>
+		</li>
+		<li><a class="subheader">Services</a>
+		</li>
+		<li>
+			<a class="waves-effect" href="./identify.html"><i class="fa fa-camera"></i><span> </span>Identify
+				Disease</a>
+		</li>
+		<li>
+			<a class="waves-effect" href="./advice.html"><i class="fa fa-seedling"></i><span> </span>What to Grow</a>
+		</li>
+		<li>
+			<a class="waves-effect" href="./weather.html"><i class="fa fa-umbrella"></i><span> </span>Weather</a>
+		</li>
+		<li>
+			<div class="divider"></div>
+		</li>
+	</ul>
+	<!-- sidenav ends -->
+	<!-- main content div -->
+	<div class="row">
+		<div class="col s12 m12">
+			<div class="card">
+				<div class="card-image">
+					<img src="./img/brown-soil.png">
+					<span class="card-title">Know what to grow</span>
+				</div>
+				<div class="card-content">
+					<!-- main card content -->
+					Know what to grow ! Soil types vary from place to place, and when compounded with climate features,
+					greatly affect your crops produce.
+					<!-- main card content ends -->
+					<p>Find what's bothering your crops</p>
+				</div>
+				<div class="card-action center-align">
+					<button id="captureImageButton" class=" waves-effect waves-light btn centre"><i
+							class="fa fa-camera"></i><span></span>
+						Connect Device</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- main content div ends -->
+	<!-- main content ends -->
+</body>
+<script src="./bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/materialize/dist/js/materialize.min.js"></script>
+<script src="./bower_components/fontawesome/js/all.js"></script>
+<script src="./custom/js/index.js"></script>
+<script>
+	$(document).ready(function () {
+		$('.sidenav').sidenav();
+	});
+</script>
+
+</html>
