@@ -70,10 +70,6 @@
 							class="fa fa-camera"></i><span></span>
 						Capture Image</button>
 				</div>
-
-				<div class="card-action">
-					<a href="./identify.html">Identify Now !</a>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -88,9 +84,46 @@
 	$(document).ready(function () {
 		$('.sidenav').sidenav();
 	});
+
+	function captureSuccess(mediaFiles) {
+        var i, len;
+        for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+            uploadFile(mediaFiles[i]);
+        }       
+	}
+	
+	function captureError(error) {
+		var msg = 'An error occurred during capture: ' + error.code;
+        navigator.notification.alert(msg, null, 'Uh oh!');
+	}
+	
+	// Upload files to server
+	function uploadFile(mediaFile) {
+		var ft = new FileTransfer(),
+			path = mediaFile.fullPath,
+			name = mediaFile.name;
+
+		ft.upload(path,
+			"http://my.domain.com/upload.php",
+			function(result) {
+				console.log('Upload success: ' + result.responseCode);
+				console.log(result.bytesSent + ' bytes sent');
+			},
+			function(error) {
+				console.log('Error uploading file ' + path + ': ' + error.code);
+			},
+			{ fileName: name });   
+	}
+	
 	$("#captureImageButton").on("click", function () {
 		console.log("triggering photo clicking");
+		function captureImage() {
+        // Launch device camera application, 
+        // allowing user to capture up to 2 images
+        navigator.device.capture.captureImage(captureSuccess, captureError, {limit: 1});
+		}
 	});
+
 </script>
 
 </html>
