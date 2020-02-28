@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="format-detection" content="telephone=no">
+	<meta name="msapplication-tap-highlight" content="no">
+	<meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+	<link rel="stylesheet" href="./css/materialize.min.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="./bower_components/fontawesome/css/all.css">
+	<title>Agri Help</title>
+</head>
+
+<body>
+	<!-- main content starts -->
+	<div class="navbar-fixed">
+		<nav>
+			<div class="nav-wrapper">
+				<a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+				<a href="#!" class="brand-logo">Sahayak</a>
+			</div>
+		</nav>
+	</div>
+
+	<!-- sidenav -->
+	<ul id="slide-out" class="sidenav">
+		<li>
+			<div class="user-view">
+				<div class="background">
+					<img src="./img/farmland.png">
+				</div>
+				<a href="#user"><img class="circle" src="./img/farmer.png"></a>
+				<a href="#name"><span class="white-text name">User</span></a>
+				<a href="#email"><span class="white-text email">Village Name</span></a>
+			</div>
+		</li>
+		<li><a class="subheader">Services</a>
+		</li>
+		<li>
+			<a class="waves-effect" href="./identify.html"><i class="fa fa-camera"></i><span> </span>Identify
+				Disease</a>
+		</li>
+		<li>
+			<a class="waves-effect" href="./advice.html"><i class="fa fa-seedling"></i><span> </span>What to Grow</a>
+		</li>
+		<li>
+			<a class="waves-effect" href="./weather.html"><i class="fa fa-umbrella"></i><span> </span>Weather</a>
+		</li>
+		<li>
+			<div class="divider"></div>
+		</li>
+	</ul>
+	<!-- sidenav ends -->
+	<!-- main content div -->
+	<div class="row">
+		<div class="col s12 m12">
+			<div class="card">
+				<div class="card-image">
+					<img src="img/crop-disease.jpeg">
+					<span class="card-title">Disease Detection</span>
+				</div>
+				<div class="card-content">
+					<!-- main card content -->
+					Identify the disease on your crop. Simply click the photo of the leaf which you find abnormal.
+					<!-- main card content ends -->
+					<p>Find what's bothering your crops</p>
+				</div>
+				<div class="card-action center-align">
+					<button id="captureImageButton" class=" waves-effect waves-light btn centre">
+						<i class="fa fa-camera"></i><span></span>
+						<span id="capturePhotoMessage">Capture Image</span></button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- main content div ends -->
+	<!-- main content ends -->
+</body>
+<script src="./bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/materialize/dist/js/materialize.min.js"></script>
+<script src="./bower_components/fontawesome/js/all.js"></script>
+<!-- <script src="./custom/js/index.js"></script> -->
+<script src="cordova.js"></script>
+<script>
+	$(document).ready(function () {
+		$('.sidenav').sidenav();
+	});
+
+	// to convert file to base 64
+	function getFileContentAsBase64(path, callback) {
+		window.resolveLocalFileSystemURL(path, gotFile, fail);
+
+		function fail(e) {
+			alert('Cannot found requested file');
+		}
+
+		function gotFile(fileEntry) {
+			fileEntry.file(function (file) {
+				var reader = new FileReader();
+				reader.onloadend = function (e) {
+					var content = this.result;
+					callback(content);
+				};
+				// The most important point, use the readAsDatURL Method from the file plugin
+				reader.readAsDataURL(file);
+			});
+		}
+	}
+
+	function captureSuccess(mediaFiles) {
+		console.log(mediaFiles);
+		$("#capturePhotoMessage").text("Processing Image");
+		getFileContentAsBase64(mediaFiles[0].fullPath, function (base64String) {
+			// now make a request to server with data
+			$.ajax({
+				url: 'https://lsppublicschool.org/deploy/parallax/',
+				method: 'POST',
+				data: {
+					payload: base64String
+				},
+				success: function (resp) {
+					$("#capturePhotoMessage").text("Image Sent to data");
+					console.log(resp);
+				},
+				error: function (err) {
+					$("#capturePhotoMessage").text("Error Uploading Image");
+					console.log(err);
+				}
+			})
+		});
+	}
+
+	function captureError(error) {
+		var msg = 'An error occurred during capture: ' + error.code;
+		navigator.notification.alert(msg, null, 'Uh oh!');
+	}
+
+	function captureImage() {
+		navigator.device.capture.captureImage(captureSuccess, captureError, { limit: 1 });
+	}
+
+	$("#captureImageButton").on("click", function () {
+		console.log("triggering photo clicking");
+		$("#capturePhotoMessage").text("Capturing Image");
+		captureImage();
+	});
+
+</script>
+
+</html>

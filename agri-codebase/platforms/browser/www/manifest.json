@@ -1,0 +1,11 @@
+{
+  "background_color": "#FFF",
+  "display": "standalone",
+  "name": "Agri Sahayak",
+  "short_name": "Agri Sahayak",
+  "version": "io.cordova.hellocordova",
+  "description": "A farmers true companion",
+  "author": "Yash Kumar Verma",
+  "icons": [],
+  "start_url": "index.html"
+}
